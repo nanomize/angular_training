@@ -9,6 +9,32 @@ import { IProduct } from '../product';
 })
 export class ProductListComponent {
 
+
+imageWith = 40;
+imageMargin = 2;
+isShowImage = true;
+
+
+
+private _searchText: string = '';
+get searchText():string {
+  return this._searchText;
+}
+set searchText(value: string){
+  this._searchText = value;
+  this.filteredProduct = this.performFilter(value);
+}
+
+performFilter(value: string){
+  if(!value) return this.products
+  return this.filteredProduct = this.products.filter(p =>p.productName.toLowerCase().includes(value.toLowerCase()));
+}
+
+toggleImage(){
+  this.isShowImage = !this.isShowImage;
+}
+  
+
  
   products: IProduct[] = [
 
@@ -63,6 +89,8 @@ export class ProductListComponent {
       "imageUrl": "assets/images/xbox-controller.png"
     }
   ];
+
+  filteredProduct: IProduct[] = this.products;
 
   getPriceLevel(p: IProduct){
     let cssClass ={'high-price':false,'low-price':false}

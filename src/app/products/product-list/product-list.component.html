@@ -1,19 +1,38 @@
 <table class="table " *ngIf="products.length">
     
     <thead>
+        <div>
+            <input type="text" [(ngModel)]="searchText">
+            <div>
+                Filter By: {{searchText}}
+            </div>
+        </div>
+      
         <tr>
             <th>Product Name</th>
             <th>Product Code</th>
             <th>Price</th>
             <th>Rating</th>
+            <th>
+                <button class="btn btn-primary" (click)="toggleImage()">
+                    {{(isShowImage)? 'Hide' : 'Show' }}
+                </button>
+            </th>
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let p of products">
+        <tr *ngFor="let p of filteredProduct">
             <td [ngStyle]="getFontSize(p)">{{p.productName}}</td>
-            <td>{{p.productCode}}</td>
-            <td [ngClass]="getPriceLevel(p)">{{p.price}}</td>
+            <td>{{p.productCode | lowercase | toSpace}}</td>
+            <td [ngClass]="getPriceLevel(p)">{{p.price | number: '2.2-2'}}</td>
             <td>{{p.starRating}}</td>
+            <td>
+                <img *ngIf="this.isShowImage == true"
+                    [src]="p.imageUrl" 
+                    [alt]="p.description"
+                    [style.width.px]="imageWith"
+                    [style.margin.px]="imageMargin" />
+            </td>
         </tr>
     </tbody>
 </table>
