@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { reduce } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'angular-demo';
+  user = {name: "book",
+  "imageUrl":"https://fakeimg.pl/250x100/ff0000/"}
+  color= 'red' ;
+  log(){
+    console.log('Button log');
+    
+  }
+
 }
