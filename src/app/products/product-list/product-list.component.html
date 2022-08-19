@@ -1,13 +1,12 @@
-<table class="table " *ngIf="products.length">
-    
-    <thead>
+<div>
+    <input type="text" [(ngModel)]="searchText">
         <div>
-            <input type="text" [(ngModel)]="searchText">
-            <div>
-                Filter By: {{searchText}}
-            </div>
+            Filter By: {{searchText}}
         </div>
-      
+     <button [routerLink]="['/product/new']">New Product</button>
+</div>
+<table class="table " *ngIf="products.length">   
+    <thead>
         <tr>
             <th>Product Name</th>
             <th>Product Code</th>
@@ -24,7 +23,7 @@
     <tbody>
         <tr *ngFor="let p of filteredProduct; let i = index">
             <td [ngStyle]="getFontSize(p)">
-                <a [routerLink]="['/products',p.productId]">
+                <a [routerLink]="['/products',p.id]">
                     {{p.productName}}
                 </a></td>
             <td>{{p.productCode | lowercase | toSpace}}</td>

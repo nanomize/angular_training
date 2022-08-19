@@ -1,4 +1,5 @@
-import { Component, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { StarComponent } from 'src/app/shared/star.component';
 import { IProduct } from '../product';
 import { ProductService } from '../product.service';
@@ -9,7 +10,7 @@ import { ProductService } from '../product.service';
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
-export class ProductListComponent implements OnInit{
+export class ProductListComponent implements OnInit, OnDestroy{
   
 products: IProduct[] = [];
 
@@ -19,16 +20,23 @@ isShowImage = true;
 
 filteredProduct: IProduct[] = this.products;
 
+sub: Subscription | undefined;
+
 constructor(private productService:ProductService ) {
 }
+
   ngOnInit(): void {
-    this.productService.getAllproducts()
+    this.sub = this.productService.getAllproducts()
     .subscribe(
       (products) => {
         this.products = products;
         this.filteredProduct = this.products;
       }
     );
+  }
+
+  ngOnDestroy(): void {
+   this.sub?.unsubscribe();
   }
 
 @ViewChildren(StarComponent) 
@@ -49,7 +57,8 @@ set searchText(value: string){
 
 performFilter(value: string){
   if(!value) return this.products
-  return this.filteredProduct = this.products.filter(p =>p.productName.toLowerCase().includes(value.toLowerCase()));
+  return this.filteredProduct = this.products.filter(
+    p =>p.productName.toLowerCase().includes(value.toLowerCase()));
 }
 
 toggleImage(){
